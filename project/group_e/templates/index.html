@@ -1,20 +1,273 @@
-
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>Flask</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+
+        </script>
     </head>
     <body>
 
-    <ol>
-    <!-- For loop logic of jinja template -->
-        {%for i in list%}
+    <div >
+        <form action="get_group_e">
+            <input type="submit" value="Math score" >
+        </form>
+    </div>
+    <div>
+        <form action="get_group_e_test_prep">
+            <input type="submit" value="Prepare for test">
+        </form>
+    </div>
+    <div>
+        <form action="get_group_e_writting">
+            <input type="submit" value="Writting score">
+        </form>
+    </div>
 
-            <li>{{i.gender}}</li>
-        {%endfor%}
+    <div>
+        <form action="get_group_e_reading">
+            <input type="submit" value="Reading score">
+        </form>
+    </div>
 
-    </ol>
+
+    <div>
+        <form action="get_group_e_diff_read_write">
+            <input type="submit" value="Read vs write">
+        </form>
+    </div>
+
+    <div>
+        <form action="get_group_e_diff_math_write">
+            <input type="submit" value="Math vs write">
+        </form>
+    </div>
+    <div>
+        <form action="get_group_e_diff_math_read">
+            <input type="submit" value="Math vs read">
+        </form>
+    </div>
+
+    <div>
+            <style>
+                  .chart-wrapper_pie {
+                  position: absolute;
+            bottom: 50%;
+            top:40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            width: 500px;
+            height: 200px;
+                  }
+                </style>
+            <style>
+                          .chart-wrapper_bar {
+                          position: absolute;
+                        top:50%;
+                    bottom: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    width: 500px;
+                    height: 300px;
+                          }
+            </style>
+        <div class="chart-wrapper_pie ">
+                        <canvas id="pie-chart" width="500" height="350"></canvas>
+                        <script>
+                        new Chart(document.getElementById("pie-chart"), {
+                        type: 'pie',
+                        data: {
+                          labels: ["Prepared", "Not prepared"],
+                          datasets: [{
+                            label: "Preparation",
+                            backgroundColor: ["#3e95cd", "#8e5ea2"],
+                            data: {{prep}}
+                          }]
+                        },
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Preparation count: '
+                          }
+                        }
+                    });
+                        </script>
+            </div>
+        <div class="chart-wrapper_bar" >
+
+            <canvas id="bar-chart" ></canvas>
+
+
+                            <script>
+                                new Chart(document.getElementById("bar-chart"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Math test count: ",
+                                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                                      data: {{ list }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  legend: { display: false },
+                                  title: {
+                                    display: true,
+                                    text: 'Math score'
+                                  }
+                                }
+                            });
+                            </script>
+
+        </div>
+
+        <div class="chart-wrapper_bar">
+                        <canvas id="writting_bar" width="500" height="350"></canvas>
+                        <script>
+                                new Chart(document.getElementById("writting_bar"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Writting test count: ",
+                                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                                      data: {{ writting }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  legend: { display: false },
+                                  title: {
+                                    display: true,
+                                    text: 'Writting score'
+                                  }
+                                }
+                            });
+                            </script>
+            </div>
+
+        <div class="chart-wrapper_bar">
+                        <canvas id="read_bar" width="500" height="350"></canvas>
+                        <script>
+                                new Chart(document.getElementById("read_bar"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Reading test count: ",
+                                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                                      data: {{ reading }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  legend: { display: false },
+                                  title: {
+                                    display: true,
+                                    text: 'Reading score'
+                                  }
+                                }
+                            });
+                            </script>
+            </div>
+
+
+         <div class="chart-wrapper_bar">
+                        <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+                        <script>
+                               new Chart(document.getElementById("bar-chart-grouped"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Reading score",
+                                      backgroundColor: "#3e95cd",
+                                      data: {{ read }}
+                                    }, {
+                                      label: "Writting score",
+                                      backgroundColor: "#8e5ea2",
+                                      data: {{ write }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  title: {
+                                    display: true,
+                                    text: 'Difference between reading and writting'
+                                  }
+                                }
+                            });
+                            </script>
+            </div>
+
+        <div class="chart-wrapper_bar">
+                        <canvas id="bar-chart-grouped1" width="800" height="450"></canvas>
+                        <script>
+                               new Chart(document.getElementById("bar-chart-grouped1"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Math score",
+                                      backgroundColor: "#3e95cd",
+                                      data: {{ math }}
+                                    }, {
+                                      label: "Writting score",
+                                      backgroundColor: "#8e5ea2",
+                                      data: {{ write_m }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  title: {
+                                    display: true,
+                                    text: 'Difference between math and writting'
+                                  }
+                                }
+                            });
+                            </script>
+            </div>
+
+        <div class="chart-wrapper_bar">
+                        <canvas id="bar-chart-grouped2" width="800" height="450"></canvas>
+                        <script>
+                               new Chart(document.getElementById("bar-chart-grouped2"), {
+                                type: 'bar',
+                                data: {
+                                  labels: ["less than 50", "between  50 and 70", "between  70 and 85", "more than 85"],
+                                  datasets: [
+                                    {
+                                      label: "Math score",
+                                      backgroundColor: "#3e95cd",
+                                      data: {{ math_m }}
+                                    }, {
+                                      label: "Read score",
+                                      backgroundColor: "#8e5ea2",
+                                      data: {{ read_m }}
+                                    }
+                                  ]
+                                },
+                                options: {
+                                  title: {
+                                    display: true,
+                                    text: 'Difference between reading and math'
+                                  }
+                                }
+                            });
+                            </script>
+            </div>
+    </div>
+
 
     </body>
 </html>

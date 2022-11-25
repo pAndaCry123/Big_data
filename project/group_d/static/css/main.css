@@ -1,0 +1,29 @@
+body{
+    background-image: url('/static/picture.jpg');
+}
+input[type="submit"] {
+  display: block;
+  font-family: Verdana,"Rockwell",Helvetica,Serif;
+  font-size: 7x;
+  width: 150px;
+  height: 100px;
+  background: #fff;
+  padding: 10px;
+  border: 0;
+  outline: 0;
+  border-radius: 50%;
+  color: #171717;
+  transition: all 200ms;
+  cursor: pointer;
+}
+input[type="submit"]:focus {
+  background: transparent;
+  color: transparent;
+  border: none;
+  border-top: solid 3px #f8a;
+  border-left: solid 3px #fff;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin {
+  to {transform: rotate(360deg);}
+}
